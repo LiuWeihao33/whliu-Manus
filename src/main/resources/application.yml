@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: super-ai-agent
+  profiles:
+    active: local
+server:
+  port: 8123
+  servlet:
+    context-path: /api # 只有访问/api才能访问后端接口，为了更好区分后端路径，不会跟前端混在一起
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.whliu.superaiagent.controller
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
