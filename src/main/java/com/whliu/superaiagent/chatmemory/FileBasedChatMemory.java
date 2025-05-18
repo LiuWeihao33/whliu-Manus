@@ -40,7 +40,10 @@ public class FileBasedChatMemory implements ChatMemory {
 
     @Override
     public void add(String conversationId, Message message) {
-        saveConversation(conversationId, List.of(message)); // 创建单元素列表，不可变，静态工厂，java9引入
+//        saveConversation(conversationId, List.of(message)); // 创建单元素列表，不可变，静态工厂，java9引入，这里有问题好像
+        List<Message> messageList = getOrCreateConversation(conversationId);
+        messageList.add(message);
+        saveConversation(conversationId, messageList);
     }
 
     @Override
