@@ -16,7 +16,7 @@ import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgDistan
 import static org.springframework.ai.vectorstore.pgvector.PgVectorStore.PgIndexType.HNSW;
 
 
-@Configuration
+//@Configuration
 public class PgVectorVectorStoreConfig {
 
     @Resource
