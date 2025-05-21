@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class whliuManus extends ToolCallAgent {
     public whliuManus(ToolCallback[] allTools, ChatModel dashscopeChatModel) {
         super(allTools);
-        this.setName("yuManus");
+        this.setName("whliuManus");
         // 都是从openManus复制的
         String SYSTEM_PROMPT = """
                 You are whliuManus, an all-capable AI assistant, aimed at solving any task presented by the user.

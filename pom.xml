@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.whliu</groupId>
-    <artifactId>super-ai-agent</artifactId>
+    <artifactId>superaiagent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>super-ai-agent</name>
     <description>super-ai-agent</description>
