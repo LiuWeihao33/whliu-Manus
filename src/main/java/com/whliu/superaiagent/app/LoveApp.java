@@ -2,6 +2,7 @@ package com.whliu.superaiagent.app;
 
 import com.whliu.superaiagent.advisor.MyLoggerAdvisor;
 import com.whliu.superaiagent.advisor.ReReadingAdvisor;
+import com.whliu.superaiagent.advisor.SensitiveWordFilteringAdvisor;
 import com.whliu.superaiagent.chatmemory.FileBasedChatMemory;
 import com.whliu.superaiagent.rag.LoveAppContextualQueryAugmenterFactory;
 import com.whliu.superaiagent.rag.LoveAppRagCustomAdvisorFactory;
@@ -56,7 +57,8 @@ public class LoveApp {
                 .defaultAdvisors(
                         new MessageChatMemoryAdvisor(chatMemory),
                         // 自定义日志拦截器，可按需开启
-                        new MyLoggerAdvisor()
+                        new MyLoggerAdvisor(),
+                        new SensitiveWordFilteringAdvisor()
 //                        // 自定义推理增强 Advisor，可按需开启
 //                        new ReReadingAdvisor()
                 )
@@ -69,14 +71,24 @@ public class LoveApp {
      * @param chatId
      * @return
      */
+    /**
+     * Consumer<ChatClient.AdvisorSpec> consumer 表示：
+     *
+     * 一个操作函数，这个操作会接收一个ChatClient.AdvisorSpec对象作为参数，但不返回任何值（void）
+     *spec -> { ... } 就是一个Consumer<ChatClient.AdvisorSpec>
+     * 当advisors()方法内部调用时，它会：
+     * 创建一个ChatClient.AdvisorSpec实例
+     * 把这个实例传给我们的lambda表达式（spec）
+     * 我们的lambda表达式对这个spec进行配置
+     */
     public String doChat(String message, String chatId) {
         ChatResponse chatResponse = chatClient
-                .prompt()
+                .prompt() // 构造一个DefaultChatClientRequestSpec，包含chatModel、userText、userParams等等信息
                 .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
-                .call()
-                .chatResponse();
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId) // chat_memory_conversation_id
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)) // chat_memory_response_size
+                .call()// new一个DefaultCallResponseSpec对象
+                .chatResponse(); // 调用aroundCall()方法和nextAroundCall()方法
         String content = chatResponse.getResult().getOutput().getText();
         log.info("content: {}", content);
         return content;
@@ -186,30 +198,30 @@ public class LoveApp {
 //    @Resource
 //    private SyncMcpToolCallbackProvider toolCallbackProvider;
 
-    @Resource
-    private ToolCallbackProvider toolCallbackProvider;
-
-    /**
-     * AI 恋爱报告功能（调用 MCP 服务）
-     *
-     * @param message
-     * @param chatId
-     * @return
-     */
-    public String doChatWithMcp(String message, String chatId) {
-        ChatResponse chatResponse = chatClient
-                .prompt()
-                .user(message)
-                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
-                // 开启日志，便于观察效果
-                .advisors(new MyLoggerAdvisor())
-                .tools(toolCallbackProvider)
-                .call()
-                .chatResponse();
-        String content = chatResponse.getResult().getOutput().getText();
-        log.info("content: {}", content);
-        return content;
-    }
+//    @Resource
+//    private ToolCallbackProvider toolCallbackProvider;
+//
+//    /**
+//     * AI 恋爱报告功能（调用 MCP 服务）
+//     *
+//     * @param message
+//     * @param chatId
+//     * @return
+//     */
+//    public String doChatWithMcp(String message, String chatId) {
+//        ChatResponse chatResponse = chatClient
+//                .prompt()
+//                .user(message)
+//                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+//                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+//                // 开启日志，便于观察效果
+//                .advisors(new MyLoggerAdvisor())
+//                .tools(toolCallbackProvider)
+//                .call()
+//                .chatResponse();
+//        String content = chatResponse.getResult().getOutput().getText();
+//        log.info("content: {}", content);
+//        return content;
+//    }
 
 }

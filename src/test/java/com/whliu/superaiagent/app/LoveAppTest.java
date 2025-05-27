@@ -19,7 +19,7 @@ class LoveAppTest {
     void testChat() {
         String chatId = UUID.randomUUID().toString();
         // 第一轮
-        String message = "你好，我是龙城狂少";
+        String message = "sb";
         String answer = loveApp.doChat(message, chatId);
         // 第二轮
         message = "我的另一半叫小手冰凉";
@@ -74,16 +74,16 @@ class LoveAppTest {
         Assertions.assertNotNull(answer);
     }
 
-    @Test
-    void doChatWithMCP() {
-        String chatId = UUID.randomUUID().toString();
-        // 测试地图MCP
-//        String message = "我在南京，帮我查询南京的咖啡店";
+//    @Test
+//    void doChatWithMCP() {
+//        String chatId = UUID.randomUUID().toString();
+//        // 测试地图MCP
+////        String message = "我在南京，帮我查询南京的咖啡店";
+////        String answer = loveApp.doChatWithMcp(message, chatId);
+////        Assertions.assertNotNull(answer);
+//        // 测试图片搜索MCP
+//        String message = "帮我搜索一些哄另一半开心的图片";
 //        String answer = loveApp.doChatWithMcp(message, chatId);
 //        Assertions.assertNotNull(answer);
-        // 测试图片搜索MCP
-        String message = "帮我搜索一些哄另一半开心的图片";
-        String answer = loveApp.doChatWithMcp(message, chatId);
-        Assertions.assertNotNull(answer);
-    }
+//    }
 }
