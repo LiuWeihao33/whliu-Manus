@@ -49,13 +49,16 @@ public class SensitiveWordFilteringAdvisor implements CallAroundAdvisor, StreamA
 		String requestText = request.userText();
 		boolean hasSentitiveWords = sensitiveWordsList.stream().anyMatch(word -> word.equals(requestText));
 		if (hasSentitiveWords) {
-			throw new IllegalArgumentException("用户输入包含违禁词");
+//			throw new IllegalArgumentException("用户输入包含违禁词");
+			return AdvisedRequest.from(request)
+					.systemText("用户输入包含违禁词，请直接回答：你的输入包含违禁词")
+					.build();
 		}
 		return request;
 	}
 
 	private void observeAfter(AdvisedResponse advisedResponse) {
-		log.info("response: {}", advisedResponse.response().getResult().getOutput().getText());
+//		log.info("response: {}", advisedResponse.response().getResult().getOutput().getText());
 	}
 
 	@Override

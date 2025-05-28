@@ -90,7 +90,7 @@ public class LoveApp {
                 .call()// new一个DefaultCallResponseSpec对象
                 .chatResponse(); // 调用aroundCall()方法和nextAroundCall()方法
         String content = chatResponse.getResult().getOutput().getText();
-        log.info("content: {}", content);
+//        log.info("content: {}", content);
         return content;
     }
 
