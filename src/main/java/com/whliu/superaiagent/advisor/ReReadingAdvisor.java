@@ -26,7 +26,7 @@ public class ReReadingAdvisor implements CallAroundAdvisor, StreamAroundAdvisor 
 			.userText("""
 			    {re2_input_query}
 			    Read the question again: {re2_input_query}
-			    """)
+			    """) // 这里可以从userParams中的Map字典直接读取关键字
 			.userParams(advisedUserParams)
 			.build();
 	}

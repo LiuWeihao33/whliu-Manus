@@ -17,7 +17,9 @@
 
 # 目前已完成功能
 - 自定义拦截器（Advisor）
-- 自己定义ChatMemory
+- 违禁词校验Advisor
+- 专用模板类，从文件加载模板
+- 自定义ChatMemory
 - 结构化输出转换器
 - 对话记忆持久化
 - 本地RAG
@@ -28,9 +30,9 @@
 - function call开发
 - MCP开发（sse和stdio）
 - 自定义Manus智能体
-- 
+
 # TODO
-- 权限校验、违禁词校验Advisor
+- 权限校验
 - 自定义对话记忆，持久化对话到MySQL、Redis中
 - 自定义DocumentReader，读取Github仓库信息
 - 自定义QueryTransformer查询转换器，使用第三方翻译API代替大模型翻译

@@ -74,6 +74,15 @@ class LoveAppTest {
         Assertions.assertNotNull(answer);
     }
 
+    @Test
+    void doChatWithPrompt() {
+        String chatId = UUID.randomUUID().toString();
+        String message = "请给我讲述一个关于海盗的故事";
+        String answer = loveApp.doChatWithPrompt(message, chatId);
+        Assertions.assertNotNull(answer);
+
+    }
+
 //    @Test
 //    void doChatWithMCP() {
 //        String chatId = UUID.randomUUID().toString();

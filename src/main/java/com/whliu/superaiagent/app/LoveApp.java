@@ -15,16 +15,22 @@ import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
@@ -45,17 +51,21 @@ public class LoveApp {
      * 初始化AI客户端
      * @param dashscopeChatModel
      */
+    // 从文件加载模板
+    @Value("classpath:/prompts/TestPrompt.st")
+    private org.springframework.core.io.Resource systemResource;
+
     public LoveApp(ChatModel dashscopeChatModel) {
-        // 初始化基于文件的对话记忆
-        String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
-        ChatMemory chatMemory = new FileBasedChatMemory(fileDir);
+//        // 初始化基于文件的对话记忆
+//        String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
+//        ChatMemory chatMemory = new FileBasedChatMemory(fileDir);
 
 //        // 初始化基于内存的对话记忆
 //        ChatMemory chatMemory = new InMemoryChatMemory();
         chatClient = ChatClient.builder(dashscopeChatModel)
                 .defaultSystem(SYSTEM_PROMPT)
                 .defaultAdvisors(
-                        new MessageChatMemoryAdvisor(chatMemory),
+//                        new MessageChatMemoryAdvisor(chatMemory),
                         // 自定义日志拦截器，可按需开启
                         new MyLoggerAdvisor(),
                         new SensitiveWordFilteringAdvisor()
@@ -114,8 +124,28 @@ public class LoveApp {
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
                 .call()
                 .entity(LoveReport.class);
-        log.info("content: {}", loveReport);
         return loveReport;
+    }
+
+    /**
+     * 使用模板构建prompt
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public String doChatWithPrompt(String message, String chatId) {
+        SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(systemResource);
+        Prompt systemPrompt = systemPromptTemplate.create(Map.of("name", "whliu", "voice", "幽默风趣的中文"));
+
+        ChatResponse chatResponse = chatClient
+                .prompt(systemPrompt)
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
+        return content;
     }
 
     // AI恋爱知识库问答功能
