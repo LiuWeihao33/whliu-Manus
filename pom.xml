@@ -113,6 +113,12 @@
             <artifactId>spring-ai-mcp-client-spring-boot-starter</artifactId>
             <version>1.0.0-M6</version>
         </dependency>
+        <!-- 集成jackson序列化库 -->
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.core</groupId>-->
+<!--            <artifactId>jackson-databind</artifactId>-->
+<!--            <version>2.18.2</version>-->
+<!--        </dependency>-->
         <!-- 集成jsoup HTML解析库 -->
         <dependency>
             <groupId>org.jsoup</groupId>

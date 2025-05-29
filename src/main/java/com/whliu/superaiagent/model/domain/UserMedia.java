@@ -28,11 +28,6 @@ public class UserMedia {
     private String mimeType;
 
     /**
-     * 用户输入内容
-     */
-    private String textContent;
-
-    /**
      * media的路径
      */
     private String mediaUrl;

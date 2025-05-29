@@ -27,3 +27,12 @@ knife4j:
 # searchAPI
 search-api:
   api-key: ${search-api.api-key}}
+# mybatis的配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.whliu.superaiagent.model.domain
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    lazy-loading-enabled: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageToolCalls {
+public class MessageToolCall {
     /**
      * id
      */

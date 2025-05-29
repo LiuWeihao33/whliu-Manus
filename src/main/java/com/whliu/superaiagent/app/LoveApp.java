@@ -69,7 +69,7 @@ public class LoveApp {
         chatClient = ChatClient.builder(dashscopeChatModel)
                 .defaultSystem(SYSTEM_PROMPT)
                 .defaultAdvisors(
-                        new MessageChatMemoryAdvisor(chatMemory),
+                        new MessageChatMemoryAdvisor(mySQLChatMemory),
                         // 自定义日志拦截器，可按需开启
                         new MyLoggerAdvisor(),
                         new SensitiveWordFilteringAdvisor()
