@@ -4,6 +4,7 @@ import com.whliu.superaiagent.advisor.MyLoggerAdvisor;
 import com.whliu.superaiagent.advisor.ReReadingAdvisor;
 import com.whliu.superaiagent.advisor.SensitiveWordFilteringAdvisor;
 import com.whliu.superaiagent.chatmemory.FileBasedChatMemory;
+import com.whliu.superaiagent.chatmemory.MySQLChatMemory;
 import com.whliu.superaiagent.rag.LoveAppContextualQueryAugmenterFactory;
 import com.whliu.superaiagent.rag.LoveAppRagCustomAdvisorFactory;
 import com.whliu.superaiagent.rag.QueryRewriter;
@@ -56,16 +57,19 @@ public class LoveApp {
     private org.springframework.core.io.Resource systemResource;
 
     public LoveApp(ChatModel dashscopeChatModel) {
-//        // 初始化基于文件的对话记忆
-//        String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
-//        ChatMemory chatMemory = new FileBasedChatMemory(fileDir);
+        // 初始化基于文件的对话记忆
+        String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
+        ChatMemory chatMemory = new FileBasedChatMemory(fileDir);
+
+        // 初始化基于MySQL的对话记忆
+        MySQLChatMemory mySQLChatMemory = new MySQLChatMemory();
 
 //        // 初始化基于内存的对话记忆
 //        ChatMemory chatMemory = new InMemoryChatMemory();
         chatClient = ChatClient.builder(dashscopeChatModel)
                 .defaultSystem(SYSTEM_PROMPT)
                 .defaultAdvisors(
-//                        new MessageChatMemoryAdvisor(chatMemory),
+                        new MessageChatMemoryAdvisor(chatMemory),
                         // 自定义日志拦截器，可按需开启
                         new MyLoggerAdvisor(),
                         new SensitiveWordFilteringAdvisor()
